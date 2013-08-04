@@ -1,0 +1,5 @@
+Hello! This is a simple, personal project to use Java and Swing to create a 1040-EZ simulator. My intent with this project is to re-create the 1040-EZ form, with all of its constraints, such that a person can project his/her tax due at the end of the year.
+
+As of 8/4/2013, my goal is to simply recreate the main form, while doing calculations that would require an additional worksheet (EITC, standard deduction) in the background.
+
+In the future, I may change the project to a question-and-answer format instead of entering information directly on the form.
