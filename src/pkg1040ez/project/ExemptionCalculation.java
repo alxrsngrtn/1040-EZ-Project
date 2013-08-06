@@ -8,10 +8,10 @@ package pkg1040ez.project;
  *
  * @author Bryan
  */
-public class ExemptionCalculation extends Project {
+public class ExemptionCalculation extends Main1040EZForm {
+    private int w2income;
     
     public int ExemptionCalc(int w2Income) {
-        int w2income;
         int lineA = w2income + 300;
         int lineB = 950;
         int lineC;
