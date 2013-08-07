@@ -49,6 +49,7 @@ public class Main1040EZForm extends JFrame {
     JTextField totalPaymentsAndCreditsField;
     JTextField taxField;
     JTextField dueOrRefundField;
+    JTextField amountOfChildrenField;
     JLabel testLabel;
     JLabel dueOrRefund;
     
@@ -76,6 +77,7 @@ public class Main1040EZForm extends JFrame {
         JLabel nonTaxableCombatPayElectionLabel = new JLabel("Nontaxable combat pay election:");
         JLabel totalPaymentsAndCreditsLabel = new JLabel("Total payments and credits:");
         JLabel taxLabel = new JLabel("Tax on income:");
+        JLabel amountOfChildrenLabel = new JLabel("How many children do you have:");
         dueOrRefund = new JLabel("Tax Due/Refund:");
         testLabel = new JLabel("This is a test label.");
         
@@ -92,6 +94,7 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsField = new JTextField("0");
         taxField = new JTextField("0");
         dueOrRefundField = new JTextField("0");
+        amountOfChildrenField = new JTextField("0");
         
         // Button to compute calculations
         computeAGIBtn = new JButton("Compute AGI");
@@ -138,7 +141,8 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsLabel.setBounds(275, 350, 200, 30);
         taxLabel.setBounds(345, 385, 100, 30);
         dueOrRefund.setBounds(340, 420, 100, 30);
-        testLabel.setBounds(200, 500, 200, 50);
+        amountOfChildrenLabel.setBounds(50, 400, 200, 50);
+        testLabel.setBounds(100, 500, 150, 50);
         
         // Set location for data entry fields
         w2IncomeEntry.setBounds(435, 15, 100, 30);
@@ -153,6 +157,7 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsField.setBounds(435, 350, 100, 30);
         taxField.setBounds(435, 385, 100, 30);
         dueOrRefundField.setBounds(435, 420, 100, 30);
+        amountOfChildrenField.setBounds(250, 415, 20, 20);
         
         // Set location for exemption checkboxes
         selfBox.setBounds(530, 138, 100, 25);
@@ -181,6 +186,7 @@ public class Main1040EZForm extends JFrame {
         panel.add(testLabel);
         panel.add(dueOrRefund);
         panel.add(taxLabel);
+        panel.add(amountOfChildrenLabel);
         
         panel.add(w2IncomeEntry);
         panel.add(interestIncomeEntry);
@@ -194,6 +200,7 @@ public class Main1040EZForm extends JFrame {
         panel.add(totalPaymentsAndCreditsField);
         panel.add(taxField);
         panel.add(dueOrRefundField);
+        panel.add(amountOfChildrenField);
         
         panel.add(selfBox);
         panel.add(spouseBox);
@@ -216,6 +223,7 @@ public class Main1040EZForm extends JFrame {
         calcTotalPaymentsAndCredits.addActionListener(buttonHandler);
         calcTax.addActionListener(buttonHandler);
         calcTaxOrRefund.addActionListener(buttonHandler);
+        calcEIC.addActionListener(buttonHandler);
         
     }
     
@@ -275,6 +283,34 @@ public class Main1040EZForm extends JFrame {
                     dueOrRefundField.setText(taxOrRefundString);
                 }
                 
+            }
+            
+            if(source == calcEIC){
+                EICDatabaseAccessor EICGrabber = new EICDatabaseAccessor();
+                int amtOfChildren = Integer.parseInt(amountOfChildrenField.getText());
+                int amtOfIncome = Integer.parseInt(taxableIncome.getText());
+                String filingStatus;
+                String childrenClaimed = "";
+                
+                if(amtOfChildren == 0){
+                    childrenClaimed = "NO_CHILD";
+                } else if(amtOfChildren == 1){
+                    childrenClaimed = "ONE_CHILD";
+                } else if(amtOfChildren == 2){
+                    childrenClaimed = "TWO_CHILD";
+                } else if(amtOfChildren >= 3){
+                    childrenClaimed = "THREE_CHILD";
+                }
+                
+                if(mfjBox.isSelected()){
+                    filingStatus = "MFJ";
+                } else {
+                    filingStatus = "SINGLE";
+                }
+
+                double EIC = EICGrabber.DetermineEIC(amtOfIncome, childrenClaimed, filingStatus);
+                String EICAmt = Double.toString(EIC);
+                earnedIncomeCreditField.setText(EICAmt);
             }
         }
     }
