@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class EICDatabaseAccessor {
     
-    public double DetermineEIC(int income, String children, String table){
+    public int DetermineEIC(int income, String children, String table){
         Connection c = null;
         Statement stmt = null;
         int eicCredit = 0;
@@ -16,8 +16,15 @@ public class EICDatabaseAccessor {
         c.setAutoCommit(false);
         
         stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT " + children + " FROM " + table +
-                                         " WHERE AT_LEAST < " + income + " AND LESS_THAN > " + income);
+        ResultSet rs;
+        if((income % 50 != 0) && income != 1) {
+             rs = stmt.executeQuery("SELECT " + children + " FROM " + table +
+                                    " WHERE AT_LEAST < " + income + " AND LESS_THAN > " + income);
+        } else {
+             rs = stmt.executeQuery("SELECT " + children + " FROM " + table +
+                                    " WHERE AT_LEAST = " + income);
+        }
+        
         eicCredit = rs.getInt(children);
         rs.close();
         stmt.close();
