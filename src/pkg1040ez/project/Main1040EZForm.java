@@ -41,7 +41,6 @@ public class Main1040EZForm extends JFrame {
     JButton calcTotalPaymentsAndCredits;
     JButton calcTax;
     JButton calcTaxOrRefund;
-    JButton convertToBigD;
     JTextField w2IncomeEntry;
     JTextField interestIncomeEntry;
     JTextField unemploymentEntry;
@@ -55,8 +54,6 @@ public class Main1040EZForm extends JFrame {
     JTextField taxField;
     JTextField dueOrRefundField;
     JTextField amountOfChildrenField;
-    JTextField testEntryField;
-    JLabel testLabel;
     JLabel dueOrRefund;
     JPanel panel;
     
@@ -77,16 +74,14 @@ public class Main1040EZForm extends JFrame {
         JLabel unemploymentIncomeAndAlaskaDividendsLabel = new JLabel("Unemployment compensation and Alaska Permanent Fund dividends:");
         JLabel adjustedGrossIncomeLabel = new JLabel("Your Adjusted Gross Income:");
         JLabel dependencyLabel = new JLabel("Can you or your spouse can be claimed as a dependent on another's return:");
-        final JLabel mfjLabel = new JLabel("Married Filing Jointly:");
         JLabel taxableIncomeLabel = new JLabel("Taxable Income:");
         JLabel incomeTaxWithheld = new JLabel("Income Tax Withheld:");
         JLabel earnedIncomeCreditLabel = new JLabel("Earned Income Credit:");
         JLabel nonTaxableCombatPayElectionLabel = new JLabel("Nontaxable combat pay election:");
         JLabel totalPaymentsAndCreditsLabel = new JLabel("Total payments and credits:");
         JLabel taxLabel = new JLabel("Tax on income:");
-        JLabel amountOfChildrenLabel = new JLabel("How many children do you have:");
+        JLabel amountOfChildrenLabel = new JLabel("Qualifying dependents:");
         dueOrRefund = new JLabel("Tax Due/Refund:");
-        testLabel = new JLabel("This is a test label.");
         
         // Text Fields for data entry
         w2IncomeEntry = new JTextField("0");
@@ -102,7 +97,6 @@ public class Main1040EZForm extends JFrame {
         taxField = new JTextField("0");
         dueOrRefundField = new JTextField("0");
         amountOfChildrenField = new JTextField("0");
-        testEntryField = new JTextField("0");
         
         // Button to compute calculations
         computeAGIBtn = new JButton("Compute AGI");
@@ -113,14 +107,13 @@ public class Main1040EZForm extends JFrame {
         calcTax = new JButton("Calculate Tax");
         testButton = new JButton("This is a test");
         calcTaxOrRefund = new JButton("Calc Tax/Refund");
-        convertToBigD = new JButton("Convert to BigDecimal");
         
         // Checkboxes to determine exemption amounts
         selfBox = new JCheckBox("You");
         selfBox.setSelected(false);
         spouseBox = new JCheckBox("Spouse");
         spouseBox.setSelected(false);
-        mfjBox = new JCheckBox("MFJ");
+        mfjBox = new JCheckBox("Married Filing Jointly");
         mfjBox.setSelected(false);
         
         
@@ -133,7 +126,6 @@ public class Main1040EZForm extends JFrame {
         calcTotalPaymentsAndCredits.setBounds(550, 350, 200, 25);
         calcTax.setBounds(550, 385, 120, 25);
         calcTaxOrRefund.setBounds(550, 420, 150, 25);
-        convertToBigD.setBounds(245, 550, 180, 30);
        
         
         
@@ -143,7 +135,6 @@ public class Main1040EZForm extends JFrame {
         unemploymentIncomeAndAlaskaDividendsLabel.setBounds(25, 75, 400, 30);
         adjustedGrossIncomeLabel.setBounds(265, 95, 175, 50);
         dependencyLabel.setBounds(25, 125, 600, 50);
-        mfjLabel.setBounds(200, 165, 150, 50);
         taxableIncomeLabel.setBounds(335, 205, 200, 50);
         incomeTaxWithheld.setBounds(308, 250, 150, 30);
         nonTaxableCombatPayElectionLabel.setBounds(248, 280, 200, 30);
@@ -151,8 +142,7 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsLabel.setBounds(275, 350, 200, 30);
         taxLabel.setBounds(345, 385, 100, 30);
         dueOrRefund.setBounds(340, 420, 100, 30);
-        amountOfChildrenLabel.setBounds(50, 400, 200, 50);
-        testLabel.setBounds(100, 500, 150, 50);
+        amountOfChildrenLabel.setBounds(50, 165, 200, 50);
         
         // Set location for data entry fields
         w2IncomeEntry.setBounds(435, 15, 100, 30);
@@ -167,13 +157,12 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsField.setBounds(435, 350, 100, 30);
         taxField.setBounds(435, 385, 100, 30);
         dueOrRefundField.setBounds(435, 420, 100, 30);
-        amountOfChildrenField.setBounds(250, 415, 20, 20);
-        testEntryField.setBounds(435, 550, 100, 30);
+        amountOfChildrenField.setBounds(190, 180, 20, 20);
         
         // Set location for exemption checkboxes
         selfBox.setBounds(530, 138, 100, 25);
         spouseBox.setBounds(460, 138, 100, 25);
-        mfjBox.setBounds(350, 178, 50, 25);
+        mfjBox.setBounds(250, 178, 150, 25);
         
         panel.add(computeAGIBtn);
         panel.add(computeDeduction);
@@ -182,20 +171,17 @@ public class Main1040EZForm extends JFrame {
         panel.add(calcTotalPaymentsAndCredits);
         panel.add(calcTax);
         panel.add(calcTaxOrRefund);
-        panel.add(convertToBigD);
         
         panel.add(w2IncomeLabel);
         panel.add(interestIncomeLabel);
         panel.add(unemploymentIncomeAndAlaskaDividendsLabel);
         panel.add(adjustedGrossIncomeLabel);
         panel.add(dependencyLabel);
-        panel.add(mfjLabel);
         panel.add(taxableIncomeLabel);
         panel.add(incomeTaxWithheld);
         panel.add(earnedIncomeCreditLabel);
         panel.add(nonTaxableCombatPayElectionLabel);
         panel.add(totalPaymentsAndCreditsLabel);
-        panel.add(testLabel);
         panel.add(dueOrRefund);
         panel.add(taxLabel);
         panel.add(amountOfChildrenLabel);
@@ -213,16 +199,12 @@ public class Main1040EZForm extends JFrame {
         panel.add(taxField);
         panel.add(dueOrRefundField);
         panel.add(amountOfChildrenField);
-        panel.add(testEntryField);
         
         panel.add(selfBox);
         panel.add(spouseBox);
         panel.add(mfjBox);
         
-        setTitle("Compute AGI For 1040-EZ");
-        setSize(900, 800);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         
         CheckHandlerClass handler = new CheckHandlerClass();
         selfBox.addItemListener(handler);
@@ -237,7 +219,6 @@ public class Main1040EZForm extends JFrame {
         calcTax.addActionListener(buttonHandler);
         calcTaxOrRefund.addActionListener(buttonHandler);
         calcEIC.addActionListener(buttonHandler);
-        convertToBigD.addActionListener(buttonHandler);
            
         InputVerifier verification = new InputVerifier() {
             public boolean verify(JComponent comp){
@@ -261,7 +242,6 @@ public class Main1040EZForm extends JFrame {
             
         };
         
-        testEntryField.setInputVerifier(verification);
         w2IncomeEntry.setInputVerifier(verification);
         interestIncomeEntry.setInputVerifier(verification);
         unemploymentEntry.setInputVerifier(verification);
@@ -275,7 +255,11 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsField.setInputVerifier(verification);
         taxField.setInputVerifier(verification);
         dueOrRefundField.setInputVerifier(verification);
-                
+     
+        setTitle("Compute AGI For 1040-EZ");
+        setSize(900, 550);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     private class ButtonHandlerClass implements ActionListener {
@@ -381,14 +365,7 @@ public class Main1040EZForm extends JFrame {
                 }
 
                 earnedIncomeCreditField.setText(EICAmt);
-            }
-            
-            if(source == convertToBigD){
-                BigDecimal decimal = new BigDecimal(testEntryField.getText());
-                decimal = decimal.setScale(0, RoundingMode.HALF_UP);
-                //decimal = decimal.round(new MathContext(2, RoundingMode.HALF_UP));
-                testEntryField.setText(decimal.toPlainString());
-            }
+            }        
         }
     }
     
