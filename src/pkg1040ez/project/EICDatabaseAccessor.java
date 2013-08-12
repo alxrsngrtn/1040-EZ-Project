@@ -5,11 +5,29 @@ import java.sql.*;
 
 public class EICDatabaseAccessor {
     
-    public int DetermineEIC(int income, String children, String table){
+    public int DetermineEIC(int income, int amtOfChildren, boolean filingStatus){
+        String children = "";
+        String table = "";
         Connection c = null;
         Statement stmt = null;
         int eicCredit = 0;
         
+        if(amtOfChildren == 0){
+               children = "NO_CHILD";
+          } else if(amtOfChildren == 1){
+               children = "ONE_CHILD";
+          } else if(amtOfChildren == 2){
+               children = "TWO_CHILD";
+          } else if(amtOfChildren >= 3){
+               children = "THREE_CHILD";
+           }
+        
+        if(filingStatus){
+               table = "MFJ";
+           } else {
+               table = "SINGLE";
+           }
+
         try {
         Class.forName("org.sqlite.JDBC");
         c = DriverManager.getConnection("jdbc:sqlite:EICDB.db");

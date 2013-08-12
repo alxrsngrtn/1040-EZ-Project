@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -27,6 +25,7 @@ import javax.swing.JOptionPane;
  * @author Bryan
  */
 public class Main1040EZForm extends JFrame {
+    //Declaring variables that will be used by the the Event methods.
     boolean isMFJ = false;
     boolean oneAsDep = false;
     boolean bothAsDep = false;
@@ -63,7 +62,9 @@ public class Main1040EZForm extends JFrame {
     }
     
     public void initUI() {
-                
+        
+        //  Creating main panel and setting Layout to null, allowing for absolute
+        //  positioning.
         panel = new JPanel();
         getContentPane().add(panel);
         panel.setLayout(null);
@@ -127,8 +128,6 @@ public class Main1040EZForm extends JFrame {
         calcTax.setBounds(550, 385, 120, 25);
         calcTaxOrRefund.setBounds(550, 420, 150, 25);
        
-        
-        
         // Set location for labels
         w2IncomeLabel.setBounds(25, 15, 410, 30);
         interestIncomeLabel.setBounds(25, 45, 400, 30);
@@ -164,6 +163,7 @@ public class Main1040EZForm extends JFrame {
         spouseBox.setBounds(460, 138, 100, 25);
         mfjBox.setBounds(250, 178, 150, 25);
         
+        // Set locations for computation buttons
         panel.add(computeAGIBtn);
         panel.add(computeDeduction);
         panel.add(computeTaxableIncome);
@@ -172,6 +172,7 @@ public class Main1040EZForm extends JFrame {
         panel.add(calcTax);
         panel.add(calcTaxOrRefund);
         
+        // Set locations for labels
         panel.add(w2IncomeLabel);
         panel.add(interestIncomeLabel);
         panel.add(unemploymentIncomeAndAlaskaDividendsLabel);
@@ -186,6 +187,7 @@ public class Main1040EZForm extends JFrame {
         panel.add(taxLabel);
         panel.add(amountOfChildrenLabel);
         
+        // Set locations for entry fields
         panel.add(w2IncomeEntry);
         panel.add(interestIncomeEntry);
         panel.add(unemploymentEntry);
@@ -200,17 +202,19 @@ public class Main1040EZForm extends JFrame {
         panel.add(dueOrRefundField);
         panel.add(amountOfChildrenField);
         
+        // Set location for checkboxes
         panel.add(selfBox);
         panel.add(spouseBox);
         panel.add(mfjBox);
         
 
-        
+        // Create handler class for checkbox events
         CheckHandlerClass handler = new CheckHandlerClass();
         selfBox.addItemListener(handler);
         spouseBox.addItemListener(handler);
         mfjBox.addItemListener(handler);
         
+        // Create buttonHandler class for button event calculations
         ButtonHandlerClass buttonHandler = new ButtonHandlerClass();
         computeAGIBtn.addActionListener(buttonHandler);
         computeDeduction.addActionListener(buttonHandler);
@@ -219,7 +223,9 @@ public class Main1040EZForm extends JFrame {
         calcTax.addActionListener(buttonHandler);
         calcTaxOrRefund.addActionListener(buttonHandler);
         calcEIC.addActionListener(buttonHandler);
-           
+        
+        // Constructed input verifier to ensure that all numbers entered are
+        // Numbers and greater than or equal to 0
         InputVerifier verification = new InputVerifier() {
             public boolean verify(JComponent comp){
                 boolean returnValue;
@@ -242,6 +248,8 @@ public class Main1040EZForm extends JFrame {
             
         };
         
+        // Setting a verifier on every field to which data could be entered
+        // or overriden
         w2IncomeEntry.setInputVerifier(verification);
         interestIncomeEntry.setInputVerifier(verification);
         unemploymentEntry.setInputVerifier(verification);
@@ -255,58 +263,85 @@ public class Main1040EZForm extends JFrame {
         totalPaymentsAndCreditsField.setInputVerifier(verification);
         taxField.setInputVerifier(verification);
         dueOrRefundField.setInputVerifier(verification);
-     
-        setTitle("Compute AGI For 1040-EZ");
+        
+        // Setting main information for the panel
+        setTitle("2012 1040-EZ Tax Calculator");
         setSize(900, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
+    // Implementing an event handler for buttons; this catches all of the
+    // events driven by clicking on a button and computes the corresponding
+    // calculations.
     private class ButtonHandlerClass implements ActionListener {
         @Override   
         public void actionPerformed(ActionEvent e) {
+            // Creating instances of computational classes
+            taxComputations taxComps = new taxComputations();
+            taxCalculator taxAmountCalculator = new taxCalculator();
+            deductionCalculator dedCalcer = new deductionCalculator();
+            
             Object source = e.getSource();
+            
+            // Retrieving user's AGI from tax computations class
             if(source == computeAGIBtn){
-                BigDecimal w2income = new BigDecimal(w2IncomeEntry.getText());
-                BigDecimal interestIncome = new BigDecimal(interestIncomeEntry.getText());
-                BigDecimal UIAndAlaskaIncome = new BigDecimal(unemploymentEntry.getText());
-                BigDecimal totalIncome = w2income.add(interestIncome.add(UIAndAlaskaIncome));
-                totalIncome = totalIncome.setScale(0, RoundingMode.HALF_UP);
-                
-                AGIField.setText(totalIncome.toPlainString());  
+                AGIField.setText(taxComps.returnAGI(w2IncomeEntry.getText(),
+                                                    interestIncomeEntry.getText(),
+                                                     unemploymentEntry.getText()));    
             }
             
             if(source == computeDeduction){
-                deductionCalculator dedCalcer = new deductionCalculator();
-                String lineFiveDeduction =  Integer.toString(dedCalcer.DedCalc((Integer.parseInt(w2IncomeEntry.getText())), isMFJ, oneAsDep, bothAsDep));
-                exemptionAmountEntry.setText(lineFiveDeduction);
+                exemptionAmountEntry.setText(dedCalcer.DedCalc((Integer.parseInt(w2IncomeEntry.getText())),
+                                                                                                 isMFJ,
+                                                                                                 oneAsDep,
+                                                                                                 bothAsDep));
             }
             
             if(source == computeTaxableIncome){
-                int totalAGI = Integer.parseInt(AGIField.getText());
-                int totalDeduction = Integer.parseInt(exemptionAmountEntry.getText());
-                String taxInc = Integer.toString(totalAGI - totalDeduction);
-                taxableIncome.setText(taxInc);
-            }
-            
-            if(source == calcTotalPaymentsAndCredits){
+                taxableIncome.setText(taxComps.computeTaxableIncome(AGIField.getText(),
+                                                                    exemptionAmountEntry.getText()));
                 
-                BigDecimal withHoldings = new BigDecimal(withholdingEntry.getText());
-                BigDecimal calculatedEIC = new BigDecimal(earnedIncomeCreditField.getText());
-                BigDecimal totalPaymentsAndCredits = withHoldings.add(calculatedEIC);
-                totalPaymentsAndCredits = totalPaymentsAndCredits.setScale(0, RoundingMode.HALF_UP);
-                totalPaymentsAndCreditsField.setText(totalPaymentsAndCredits.toPlainString());
             }
             
             if(source == calcTax){
-                taxCalculator taxAmountCalculator = new taxCalculator();
-                int taxToCompute = Integer.parseInt(taxableIncome.getText());
-                BigDecimal taxAmount = new BigDecimal(taxAmountCalculator.CalcTax(taxToCompute));
-                taxAmount = taxAmount.setScale(0, RoundingMode.HALF_UP);
-                //String taxAmount = Double.toString(taxAmountCalculator.CalcTax(taxToCompute));
-                taxField.setText(taxAmount.toPlainString());
+                taxField.setText(taxAmountCalculator.CalcTax(taxableIncome.getText()));
+
             }
             
+            if(source == calcEIC){
+                EICDatabaseAccessor EICGrabber = new EICDatabaseAccessor();
+                int amtOfChildren = Integer.parseInt(amountOfChildrenField.getText());
+                int amtOfIncome = Integer.parseInt(taxableIncome.getText());
+                int combatIncome = Integer.parseInt(nonTaxableCombatPayElectionField.getText());
+                int amtOfIncomeWithCombat = Integer.parseInt(taxableIncome.getText()) + combatIncome;
+                int EICWithoutCombat = 0;
+                int EICWithCombat = 0;
+                String EICAmt;
+                                
+                if(amtOfIncome > 0 || combatIncome > 0){
+                    EICWithoutCombat = EICGrabber.DetermineEIC(amtOfIncome,
+                                                               amtOfChildren,
+                                                               mfjBox.isSelected());
+                    EICWithCombat = EICGrabber.DetermineEIC(amtOfIncomeWithCombat,
+                                                            amtOfChildren,
+                                                            mfjBox.isSelected());
+                }
+
+                if(EICWithoutCombat >= EICWithCombat){
+                    EICAmt = Integer.toString(EICWithoutCombat);
+                } else {
+                    EICAmt = Integer.toString(EICWithCombat);
+                }
+
+                earnedIncomeCreditField.setText(EICAmt);
+            }
+            
+            if(source == calcTotalPaymentsAndCredits){
+                totalPaymentsAndCreditsField.setText(taxComps.calcTotalPaymentsAndCredits(withholdingEntry.getText(),
+                                                                                          earnedIncomeCreditField.getText()));
+            }
+                        
             if(source == calcTaxOrRefund){
                 int payments = Integer.parseInt(totalPaymentsAndCreditsField.getText());
                 int tax = Integer.parseInt(taxField.getText());
@@ -322,54 +357,15 @@ public class Main1040EZForm extends JFrame {
                     dueOrRefund.setText("Refund!");
                     dueOrRefundField.setText(taxOrRefundString);
                 }
-                
             }
-            
-            if(source == calcEIC){
-                EICDatabaseAccessor EICGrabber = new EICDatabaseAccessor();
-                int amtOfChildren = Integer.parseInt(amountOfChildrenField.getText());
-                int amtOfIncome = Integer.parseInt(taxableIncome.getText());
-                int combatIncome = Integer.parseInt(nonTaxableCombatPayElectionField.getText());
-                int amtOfIncomeWithCombat = Integer.parseInt(taxableIncome.getText()) + combatIncome;
-                int EICWithoutCombat = 0;
-                int EICWithCombat = 0;
-                String filingStatus;
-                String childrenClaimed = "";
-                String EICAmt;
-                
-                if(amtOfChildren == 0){
-                    childrenClaimed = "NO_CHILD";
-                } else if(amtOfChildren == 1){
-                    childrenClaimed = "ONE_CHILD";
-                } else if(amtOfChildren == 2){
-                    childrenClaimed = "TWO_CHILD";
-                } else if(amtOfChildren >= 3){
-                    childrenClaimed = "THREE_CHILD";
-                }
-                
-                if(mfjBox.isSelected()){
-                    filingStatus = "MFJ";
-                } else {
-                    filingStatus = "SINGLE";
-                }
-                
-                if(amtOfIncome > 0 || combatIncome > 0){
-                    EICWithoutCombat = EICGrabber.DetermineEIC(amtOfIncome, childrenClaimed, filingStatus);
-                    EICWithCombat = EICGrabber.DetermineEIC(amtOfIncomeWithCombat, childrenClaimed, filingStatus);
-                }
-
-                if(EICWithoutCombat >= EICWithCombat){
-                    EICAmt = Integer.toString(EICWithoutCombat);
-                } else {
-                    EICAmt = Integer.toString(EICWithCombat);
-                }
-
-                earnedIncomeCreditField.setText(EICAmt);
-            }        
         }
     }
     
+    // Sets the CheckHandlerClass to monitor the checkboxes and change the
+    // corresponding variables (whether the user is single or married filing
+    // jointly, can be claimed as a dependent on another's return, etc.)
     private class CheckHandlerClass implements ItemListener {
+        @Override
         public void itemStateChanged(ItemEvent e) {
             Object source = e.getSource();
             if(source == mfjBox && mfjBox.isSelected()){
@@ -394,7 +390,8 @@ public class Main1040EZForm extends JFrame {
             
         }
     }
-
+    
+    // Creates and initializes the program, sets it visible
     public static void main(String[] args) {
         
         SwingUtilities.invokeLater(new Runnable() {

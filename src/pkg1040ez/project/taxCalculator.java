@@ -4,13 +4,17 @@
  */
 package pkg1040ez.project;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  *
  * @author Bryan
  */
 public class taxCalculator {
     
-    public double CalcTax(int taxableIncome){
+    public String CalcTax(String taxableIncString){
+        double taxableIncome = Double.parseDouble(taxableIncString);
         double tax = 0;
         
         if(taxableIncome > 0){
@@ -40,8 +44,11 @@ public class taxCalculator {
         if(taxableIncome > 85650){
             tax = tax + ((taxableIncome - 85650) * .28);
         }
-
-        return tax;
+        
+        BigDecimal taxAmount = new BigDecimal(tax);
+        taxAmount = taxAmount.setScale(0, RoundingMode.HALF_UP);
+        return taxAmount.toPlainString();
+ 
     }
     
 }

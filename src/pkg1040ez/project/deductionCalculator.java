@@ -10,7 +10,7 @@ package pkg1040ez.project;
  */
 public class deductionCalculator {
     
-    public int DedCalc(int w2income, boolean mfj, boolean oneAsDep, boolean bothAsDep){
+    public String DedCalc(int w2income, boolean mfj, boolean oneAsDep, boolean bothAsDep){
     int minStdDed = 950;
     int maxStdDed;
     int actualStdDed;
@@ -56,8 +56,7 @@ public class deductionCalculator {
         }
         
         
-        
-        return total;
+        return Integer.toString(total);
     }
     
 }
