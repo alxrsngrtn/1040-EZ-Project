@@ -106,7 +106,6 @@ public class Main1040EZForm extends JFrame {
         calcEIC = new JButton("Calculate EIC");
         calcTotalPaymentsAndCredits = new JButton("Calc total payments/credits");
         calcTax = new JButton("Calculate Tax");
-        testButton = new JButton("This is a test");
         calcTaxOrRefund = new JButton("Calc Tax/Refund");
         
         // Checkboxes to determine exemption amounts
@@ -122,7 +121,6 @@ public class Main1040EZForm extends JFrame {
         computeAGIBtn.setBounds(550, 105, 120, 25);
         computeDeduction.setBounds(550, 175, 160, 25);
         computeTaxableIncome.setBounds(550, 215, 180, 25);
-        testButton.setBounds(300, 400, 120, 25);
         calcEIC.setBounds(550, 315, 120, 25);
         calcTotalPaymentsAndCredits.setBounds(550, 350, 200, 25);
         calcTax.setBounds(550, 385, 120, 25);
@@ -157,6 +155,7 @@ public class Main1040EZForm extends JFrame {
         taxField.setBounds(435, 385, 100, 30);
         dueOrRefundField.setBounds(435, 420, 100, 30);
         amountOfChildrenField.setBounds(190, 180, 20, 20);
+        
         
         // Set location for exemption checkboxes
         selfBox.setBounds(530, 138, 100, 25);
@@ -288,7 +287,7 @@ public class Main1040EZForm extends JFrame {
             if(source == computeAGIBtn){
                 AGIField.setText(taxComps.returnAGI(w2IncomeEntry.getText(),
                                                     interestIncomeEntry.getText(),
-                                                     unemploymentEntry.getText()));    
+                                                     unemploymentEntry.getText()));
             }
             
             if(source == computeDeduction){
@@ -315,26 +314,8 @@ public class Main1040EZForm extends JFrame {
                 int amtOfIncome = Integer.parseInt(taxableIncome.getText());
                 int combatIncome = Integer.parseInt(nonTaxableCombatPayElectionField.getText());
                 int amtOfIncomeWithCombat = Integer.parseInt(taxableIncome.getText()) + combatIncome;
-                int EICWithoutCombat = 0;
-                int EICWithCombat = 0;
-                String EICAmt;
-                                
-                if(amtOfIncome > 0 || combatIncome > 0){
-                    EICWithoutCombat = EICGrabber.DetermineEIC(amtOfIncome,
-                                                               amtOfChildren,
-                                                               mfjBox.isSelected());
-                    EICWithCombat = EICGrabber.DetermineEIC(amtOfIncomeWithCombat,
-                                                            amtOfChildren,
-                                                            mfjBox.isSelected());
-                }
 
-                if(EICWithoutCombat >= EICWithCombat){
-                    EICAmt = Integer.toString(EICWithoutCombat);
-                } else {
-                    EICAmt = Integer.toString(EICWithCombat);
-                }
-
-                earnedIncomeCreditField.setText(EICAmt);
+                earnedIncomeCreditField.setText(EICGrabber.DetermineEIC(amtOfIncome, amtOfIncomeWithCombat, amtOfChildren, mfjBox.isSelected()));
             }
             
             if(source == calcTotalPaymentsAndCredits){
@@ -402,6 +383,5 @@ public class Main1040EZForm extends JFrame {
             }
             
         });
-        // TODO code application logic here
     }
 }
