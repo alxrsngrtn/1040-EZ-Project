@@ -5,13 +5,13 @@ import java.sql.*;
 
 public class EICDatabaseAccessor {
     
-    public String DetermineEIC(int incomeWithoutCombat, int incomeWithCombat, int amtOfChildren, boolean filingStatus){
+    public String DetermineEIC(int incomeWithoutCombat, int combatIncome, int amtOfChildren, boolean filingStatus){
         String children = "";
         String table = "";
         String EICAmt = "";
         int eicCredit = 0;
         int eicWithCombat = 0;
-        int withoutCombat = 0;
+        int eicWithoutCombat = 0;
         
         if(amtOfChildren == 0){
                children = "NO_CHILD";
@@ -29,15 +29,15 @@ public class EICDatabaseAccessor {
                table = "SINGLE";
            }
         
-        if(incomeWithoutCombat > 0){
-            eicWithCombat = QueryEICTable(incomeWithCombat, children, table);
-            withoutCombat = QueryEICTable(incomeWithoutCombat, children, table);   
+        if(combatIncome > 0){
+            eicWithCombat = QueryEICTable((incomeWithoutCombat + combatIncome), children, table);
+            eicWithoutCombat = QueryEICTable(incomeWithoutCombat, children, table);   
         } else {
-            withoutCombat = QueryEICTable(incomeWithoutCombat, children, table);
+            eicWithoutCombat = QueryEICTable(incomeWithoutCombat, children, table);
         }
         
-        if(withoutCombat >= eicWithCombat){
-              EICAmt = Integer.toString(withoutCombat);
+        if(eicWithoutCombat >= eicWithCombat){
+              EICAmt = Integer.toString(eicWithoutCombat);
         } else {
               EICAmt = Integer.toString(eicWithCombat);
         }

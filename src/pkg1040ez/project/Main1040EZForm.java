@@ -315,7 +315,7 @@ public class Main1040EZForm extends JFrame {
                 int combatIncome = Integer.parseInt(nonTaxableCombatPayElectionField.getText());
                 int amtOfIncomeWithCombat = Integer.parseInt(taxableIncome.getText()) + combatIncome;
 
-                earnedIncomeCreditField.setText(EICGrabber.DetermineEIC(amtOfIncome, amtOfIncomeWithCombat, amtOfChildren, mfjBox.isSelected()));
+                earnedIncomeCreditField.setText(EICGrabber.DetermineEIC(amtOfIncome, combatIncome, amtOfChildren, mfjBox.isSelected()));
             }
             
             if(source == calcTotalPaymentsAndCredits){
