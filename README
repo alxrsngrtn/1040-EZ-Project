@@ -28,3 +28,15 @@ Ideal plans:
 Spruce up GUI. Give it a more appealing look than the basic Swing appearance.
 Possibly change format to multiple screens where user inputs information individually and progresses to return Form with all calculations automatically performed (no need to click all of the buttons). 
 
+8/15/2013:
+
+Big changes! Converted program to use tab format. Completed two new screens. One for entering income and withholdings, the second for entering tax-relevant information (number of qualifying kids, filing status, etc.), and revamped the 1040-EZ Form tab to give it a cleaner appearance.
+
+Also added text to give user information regarding the tests needed to claim a child as a "qualifying child" for the EIC.
+Added input verifiers for W-2 income and taxable interest (if income is in excess of 100,000 or 1500, respectively, they are not allowed to use that form).
+Simplified process down to one button! No ceaseless clicking!
+
+Future goals:
+
+Find ways to streamline/simplify GUI object implementation. It takes up a lot of space.
+Jazz up GUI so it isn't a plain gray screen.

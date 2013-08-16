@@ -43,7 +43,13 @@ public class taxComputations {
     public String computeTaxableIncome(String AGIField, String exemptionEntry){
         int totalAGI = Integer.parseInt(AGIField);
         int totalDeduction = Integer.parseInt(exemptionEntry);
-        String taxInc = Integer.toString(totalAGI - totalDeduction);
+        String taxInc;
+        
+        if((totalAGI - totalDeduction) > 0){
+            taxInc = Integer.toString(totalAGI - totalDeduction);
+        } else {
+            taxInc = Integer.toString(0);
+        }
         
         return taxInc;
 
