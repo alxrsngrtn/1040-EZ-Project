@@ -1,5 +1,6 @@
 package pkg1040ez.project;
 
+import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
 
 /**
@@ -15,9 +16,10 @@ public class UserNumberEntry {
 
         label.setBounds(xPos, yPos, labelWidth, height);
         entry.setBounds(labelWidth + margin, yPos, entryWidth, height);
+    }
 
-
-
+    public UserNumberEntry(String labelText, int xPos, int labelWidth, int entryWidth, int yPos, int height, int margin) {
+        this(labelText, "0", xPos, labelWidth, entryWidth, yPos, height, margin);
     }
 
     public void addToPanel(JPanel panel){

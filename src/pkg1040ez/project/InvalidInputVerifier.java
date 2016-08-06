@@ -7,15 +7,21 @@ import javax.swing.*;
  */
 public class InvalidInputVerifier extends InputVerifier {
     private JPanel panel;
-    private JTextField entry;
+    private UserNumberEntry entry;
     private Double max;
     private String alertMsg;
 
-    public InvalidInputVerifier(JPanel panel, JTextField entry, Double max, String alertMsg){
+    public InvalidInputVerifier(JPanel panel, UserNumberEntry entry, Double max, String alertMsg){
+        this.panel     = panel;
+        this.entry     = entry;
+        this.max       = max;
+        this.alertMsg  = alertMsg;
+    }
+
+    public InvalidInputVerifier(JPanel panel){
         this.panel    = panel;
-        this.entry    = entry;
-        this.max      = max;
-        this.alertMsg = alertMsg;
+        this.max      = -1.0;
+        this.alertMsg = "";
     }
 
 
@@ -28,12 +34,17 @@ public class InvalidInputVerifier extends InputVerifier {
         boolean returnValue;
         JTextField textField = (JTextField) comp;
         try {
+            Double.parseDouble(textField.getText());
             double num = Double.parseDouble(textField.getText());
-            double entryVal = Double.parseDouble(entry.getText());
+            double entryVal = 0;
+            if(entry != null){
+                entryVal = Double.parseDouble(entry.getEntryText());
+            }
             returnValue = num >= 0;
+
             if(num < 0) {
                 JOptionPane.showMessageDialog(panel, "Please enter a positive number (or zero).");
-            } else if(entryVal > max){
+            } else if(entryVal > max && max > -1.0){
                 JOptionPane.showMessageDialog(panel, alertMsg);
             }
         } catch (NumberFormatException e) {

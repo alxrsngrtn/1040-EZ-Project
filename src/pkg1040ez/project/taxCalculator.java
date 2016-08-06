@@ -48,6 +48,22 @@ public class taxCalculator {
     }
 
     /**
+     * Returns the tax bracket a person resides in -- for married filing jointly
+     * @param taxableIncome
+     * @return
+     */
+    public double mfjTaxBracket(double taxableIncome){
+        if(isInTaxBracket(taxableIncome, 0.0, 17400.0)){
+            return 0.10;
+        }
+        if(isInTaxBracket(taxableIncome, 17400.0, 70700.0)){
+            return 0.15;
+        }
+        return 0.25;
+    }
+
+
+    /**
      * Modifies the input tax amount based on how taxable income is placed within the tax bracket.
      * TODO: convert to big decimal
      * @param tax starting tax amount
@@ -69,6 +85,20 @@ public class taxCalculator {
         return tax;
     }
 
+    /**
+     * Determines if person is within tax bracket, non-inclusive
+     * @param income taxable income
+     * @param lower lower bound for bracket
+     * @param upper upper bound for bracket
+     * @return boolean, true if they are within the bracket
+     */
+    private boolean isInTaxBracket(double income, double lower, double upper){
+        if(upper < 0){
+            return income >= lower;
+        }
+        return income >= lower && income < upper;
+    }
+
     public double singleTaxes(double taxableIncome) {
         double tax;
         tax = updateTaxIfWithinBracket(0,   taxableIncome, 0,     8700,  0.10);
@@ -76,5 +106,23 @@ public class taxCalculator {
         tax = updateTaxIfWithinBracket(tax, taxableIncome, 35350, 85650, 0.25);
         tax = updateTaxIfWithinBracket(tax, taxableIncome, 85650, -1,    0.28);
         return tax;
+    }
+
+    /**
+     * Returns the tax bracket a person resides in -- for filing single
+     * @param taxableIncome
+     * @return
+     */
+    public double singleTaxBracket(double taxableIncome){
+        if(isInTaxBracket(taxableIncome, 0.0, 8700.0)){
+            return 0.10;
+        }
+        if(isInTaxBracket(taxableIncome, 8700.0, 35350.0)){
+            return 0.15;
+        }
+        if(isInTaxBracket(taxableIncome, 35350.0, 85650.0)){
+            return 0.25;
+        }
+        return 0.28;
     }
 }
