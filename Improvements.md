@@ -6,7 +6,7 @@
 - On Form 1040-EZ tab: text occluding form
 - Error: `[java] Database inaccessible!`. Caused by: 
  1. When you click "Calculate" button too many times with minimal input (e.g. just wage form entered)
-- Possible bug: for mfjTaxes, when taxableIncome is zero, the calculated tax is 9735.25? 
+- [x] Possible bug: for mfjTaxes (and singleTaxes), when taxableIncome is zero, the calculated tax is 9735.25? 
 
 ## Enhancements
 - Should comma delimit numbers, will make input text more readable
@@ -28,14 +28,20 @@
 
 ### Main1040EZForm
 - BREAK UP MONOLITHIC METHODS INTO BITE SIZED FUNCTIONS --> makes more readable, testable, and maintainable
-- Change access from protected to private
+- Change variable access from protected to private
+- [x] Make helper functions private
 - Convert magic numbers to constants at top of file, make configurable
-- ... 
+- Convert methods to pure functions, minimize side effects. 
+- Idea: move InputVerifier into a class
+- Idea: write method that creates label with input field. Set the boundry in this method, too. Also add to incomeEntryPane. Also set verifier on these labels.
+- Idea: pull out magic numbers for positioning into constants so they can be configured at the top of the file
+- Move ButtonHandlerClass to another file
+- Move CheckHandlerClass to another file
 
 ### taxCalculator
 - REMOVE MAGIC NUMBERS
 - [x] Extract method from repeated logic
-- [x] Possible bug: for mfjTaxes, when taxableIncome is zero, the calculated tax is 9735.25? 
+- [x] Possible bug: for mfjTaxes (and singleTaxes), when taxableIncome is zero, the calculated tax is 9735.25? 
 - If you want the outputs to be in big decimal, the inputs should be in big decimal. This will be more robust. If the service should handle decimal inputs, then overload the functions and deffer the computation to the big decimal implementation.
 - [x] Convert to pure functions, i.e. eliminate side effects. These can cause errors.
 - [x] improved whitespace
@@ -54,4 +60,4 @@
 ### deductionCalculator
 - more verbose variable names
 - remove unused variables
-- 
+

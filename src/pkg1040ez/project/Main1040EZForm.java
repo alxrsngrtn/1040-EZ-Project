@@ -12,14 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 
 public class Main1040EZForm extends JFrame {
@@ -31,6 +29,8 @@ public class Main1040EZForm extends JFrame {
      */
     
     boolean isMFJ, oneAsDep, bothAsDep;
+
+    UserNumberEntry w2Income;
     
     /* Checkboxes for user to indicate filing status and dependent status.
      * Works in conjunction with above booleans.
@@ -93,7 +93,7 @@ public class Main1040EZForm extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
-    public void incomePage(){
+    private void incomePage(){
         
         incomeEntryPanel = new JPanel();
         incomeEntryPanel.setLayout(null);
@@ -102,10 +102,17 @@ public class Main1040EZForm extends JFrame {
          * background color.
          */
         Color backgroundColor = incomeEntryPanel.getBackground();
+
+        w2Income = new UserNumberEntry("Wages, salaries, and tips. Enter total"
+                + "income from Box 1 of Form(s) W-2:",
+                "0", 25, 410, 100, 15, 30, 25);
+
+        w2Income.addToPanel(incomeEntryPanel);
+
         
         // Labels corresponding with TextFields for user information entry
-        JLabel w2IncomeLabel = new JLabel("Wages, salaries, and tips. Enter total"
-                + "income from Box 1 of Form(s) W-2:");
+//        JLabel w2IncomeLabel = new JLabel("Wages, salaries, and tips. Enter total"
+//                + "income from Box 1 of Form(s) W-2:");
         JLabel interestIncomeLabel = new JLabel("Taxable Interest. If the total"
                 + "is over $1,500, you cannot use this Form:");
         JLabel unemploymentIncomeAndAlaskaDividendsLabel = new JLabel("Unemployment"
@@ -114,7 +121,7 @@ public class Main1040EZForm extends JFrame {
         JLabel incomeTaxWithheld = new JLabel("Income Tax Withheld:");
         
         // TextFields for user information entry.
-        w2IncomeEntry = new JTextField("0");
+//        w2IncomeEntry = new JTextField("0");
         interestIncomeEntry = new JTextField("0");
         unemploymentEntry = new JTextField("0");
         combatPayEntry = new JTextField("0");
@@ -126,13 +133,13 @@ public class Main1040EZForm extends JFrame {
                 + "$100,000, you cannot use this Form."); 
         incomeLimitationsAreaLabel.setBackground(backgroundColor);
         
-        w2IncomeEntry.setBounds(435, 15, 100, 30);
+//        w2IncomeEntry.setBounds(435, 15, 100, 30);
         interestIncomeEntry.setBounds(435, 45, 100, 30);
         unemploymentEntry.setBounds(435, 75, 100, 30);
         combatPayEntry.setBounds(435, 105, 100, 30);
         withholdingEntry.setBounds(435, 135, 100, 30);
 
-        w2IncomeLabel.setBounds(25, 15, 410, 30);
+//        w2IncomeLabel.setBounds(25, 15, 410, 30);
         interestIncomeLabel.setBounds(25, 45, 400, 30);
         unemploymentIncomeAndAlaskaDividendsLabel.setBounds(25, 75, 400, 30);
         nonTaxableCombatPayElectionLabel.setBounds(231, 105, 200, 30);
@@ -140,13 +147,13 @@ public class Main1040EZForm extends JFrame {
         
         incomeLimitationsAreaLabel.setBounds(25, 175, 600, 40);
         
-        incomeEntryPanel.add(w2IncomeEntry);
+//        incomeEntryPanel.add(w2IncomeEntry);
         incomeEntryPanel.add(interestIncomeEntry);
         incomeEntryPanel.add(unemploymentEntry);
         incomeEntryPanel.add(combatPayEntry);
         incomeEntryPanel.add(withholdingEntry);
 
-        incomeEntryPanel.add(w2IncomeLabel);
+//        incomeEntryPanel.add(w2IncomeLabel);
         incomeEntryPanel.add(interestIncomeLabel);
         incomeEntryPanel.add(unemploymentIncomeAndAlaskaDividendsLabel);
         incomeEntryPanel.add(nonTaxableCombatPayElectionLabel);
@@ -165,7 +172,7 @@ public class Main1040EZForm extends JFrame {
                 try {
                     Double.parseDouble(textField.getText());
                     double num = Double.parseDouble(textField.getText());
-                    double w2inc = Double.parseDouble(w2IncomeEntry.getText());
+                    double w2inc = Double.parseDouble(w2Income.getEntryText());
                     double intInc = Double.parseDouble(interestIncomeEntry.getText());
                     returnValue = num >= 0;
                     if(num < 0) {
@@ -183,8 +190,10 @@ public class Main1040EZForm extends JFrame {
                 return returnValue;
             }
        };
-       
-        w2IncomeEntry.setInputVerifier(verification);
+
+        w2Income.setVerification(verification);
+
+//        w2IncomeEntry.setInputVerifier(verification);
         interestIncomeEntry.setInputVerifier(verification);
         unemploymentEntry.setInputVerifier(verification);
         withholdingEntry.setInputVerifier(verification);
@@ -192,7 +201,7 @@ public class Main1040EZForm extends JFrame {
         
     }
     
-    public void personalDetailsPage(){
+    private void personalDetailsPage(){
         
         personalDetailsPanel = new JPanel();
         personalDetailsPanel.setLayout(null);
@@ -287,7 +296,7 @@ public class Main1040EZForm extends JFrame {
         
     }
     
-    public void finalFormPage(){
+    private void finalFormPage(){
         
         finalTaxFormPanel = new JPanel();
         finalTaxFormPanel.setLayout(null);
@@ -476,8 +485,8 @@ public class Main1040EZForm extends JFrame {
                 /* Taking user entries from input TextFields and displaying them
                  * on corresponding entry displays on Form.
                  */
-                
-                w2incomeFormDisplay.setText(w2IncomeEntry.getText());
+                w2incomeFormDisplay.setText(w2Income.getEntryText());
+//                w2incomeFormDisplay.setText(w2IncomeEntry.getText());
                 interestIncomeFormDisplay.setText(interestIncomeEntry.getText());
                 unemploymentIncomeFormDisplay.setText(unemploymentEntry.getText());
                 combatPayFormDisplay.setText(combatPayEntry.getText());
@@ -485,12 +494,12 @@ public class Main1040EZForm extends JFrame {
                 amountOfChildrenFormDisplay.setText(amountOfChildrenEntry.getText());
                 
                 // Computation to determine user's AGI.
-                AGIFieldFormDisplay.setText(taxComps.returnAGI(w2IncomeEntry.getText(),
+                AGIFieldFormDisplay.setText(taxComps.returnAGI(w2Income.getEntryText(),
                                                     interestIncomeEntry.getText(),
                                                      unemploymentEntry.getText()));
                 
                 // Computation to determine user's allowed deductions/exemptions.
-                exemptionAmountFormDisplay.setText(dedCalcer.DedCalc((Integer.parseInt(w2IncomeEntry.getText())),
+                exemptionAmountFormDisplay.setText(dedCalcer.DedCalc((Integer.parseInt(w2Income.getEntryText())),
                                                                                                  isMFJ,
                                                                                                  oneAsDep,
                                                                                                  bothAsDep));
