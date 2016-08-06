@@ -151,7 +151,10 @@ public class Main1040EZForm extends JFrame {
                 + "$100,000, you cannot use this Form.");
         incomeLimitationsAreaLabel.setBackground(backgroundColor);
         incomeLimitationsAreaLabel.setBounds(25, 175, 600, 40);
+        incomeLimitationsAreaLabel.setEnabled(false);
+        incomeLimitationsAreaLabel.setDisabledTextColor(Color.BLACK);
         incomeEntryPanel.add(incomeLimitationsAreaLabel);
+
 
         InvalidInputVerifier w2Verification = new InvalidInputVerifier(panel, w2Income, 100000.0,
                 "Your W-2 income is in excess of $100,000. You cannot use this form.");
@@ -184,15 +187,23 @@ public class Main1040EZForm extends JFrame {
         JTextArea eicConditionALabel = new JTextArea("A. Be your son, daughter, stepchild, foster child, or a descendant of any of them, or\n"
                 + "     Brother, sister, half brother, half sister, stepbrother, stepsister, or any descendent of any of them.");
         eicConditionALabel.setBackground(backgroundColor);
+        eicConditionALabel.setEnabled(false);
+        eicConditionALabel.setDisabledTextColor(Color.BLACK);
         JTextArea eicConditionBLabel = new JTextArea("B. Under the age of 19 at the end of 2012 and younger than you (or your spouse, if married, filing jointly), or\n"
                 + "     Under age 24 at the end of 2012, a student, and younger than you (or spouse, if MFJ), or\n"
                 + "     Permanently and totally disabled at any time during the year, regardless of age.");
         eicConditionBLabel.setBackground(backgroundColor);
+        eicConditionBLabel.setEnabled(false);
+        eicConditionBLabel.setDisabledTextColor(Color.BLACK);
         JTextArea eicConditionCLabel = new JTextArea("C. Who is not filing a joint return for 2012 (or is filing a joint return for 2012 only to claim a refund of income tax\n"
                 + "     withheld or estimated tax paid).");
         eicConditionCLabel.setBackground(backgroundColor);
+        eicConditionCLabel.setEnabled(false);
+        eicConditionCLabel.setDisabledTextColor(Color.BLACK);
         JTextArea eicConditionDLabel = new JTextArea("D. Who lived with you in the United States for more than half of 2012.");
         eicConditionDLabel.setBackground(backgroundColor);
+        eicConditionDLabel.setEnabled(false);
+        eicConditionDLabel.setDisabledTextColor(Color.BLACK);
 
         amountOfChildrenEntry = new JTextField("0");
 

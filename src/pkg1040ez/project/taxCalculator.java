@@ -65,11 +65,10 @@ public class taxCalculator {
 
     /**
      * Modifies the input tax amount based on how taxable income is placed within the tax bracket.
-     * TODO: convert to big decimal
      * @param tax starting tax amount
      * @param taxableIncome total income
      * @param lowerBound min amount to fall in bracket
-     * @param upperBound if <= 0, treated as no upper bound
+     * @param upperBound if upperBound <= 0, treated as no upper bound
      * @param rate rate to be taxed in this bracket
      * @return modified tax value
      */
