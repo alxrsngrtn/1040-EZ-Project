@@ -486,9 +486,10 @@ public class Main1040EZForm extends JFrame {
                 amountOfChildrenFormDisplay.setText(amountOfChildrenEntry.getText());
 
                 // Computation to determine user's AGI.
-                AGIFieldFormDisplay.setText(taxComps.returnAGI(w2Income.getEntryText(),
+                String AIG = taxComps.returnAGI(w2Income.getEntryText(),
                         interestIncome.getEntryText(),
-                        unemploymentIncome.getEntryText()));
+                        unemploymentIncome.getEntryText());
+                AGIFieldFormDisplay.setText(AIG);
 
                 // Computation to determine user's allowed deductions/exemptions.
                 exemptionAmountFormDisplay.setText(dedCalcer.DedCalc((Integer.parseInt(w2Income.getEntryText())),
@@ -534,7 +535,7 @@ public class Main1040EZForm extends JFrame {
                  * to determine whether user will owe, receive a refund, or will
                  * have a balance of zero on his taxes.
                  */
-                int payments = Integer.parseInt(paymentsAndCreditsFormDisplay.getText());
+                int payments = Integer.parseInt(paymentsAndCreditsFormDisplay.getText()); // TODO should be double!!
                 int tax = Integer.parseInt(taxFormDisplay.getText());
                 int taxOrRefund = tax - payments;
 
@@ -544,14 +545,14 @@ public class Main1040EZForm extends JFrame {
 
                 double percentOfIncome = 0.0;
                 // Test if income is not zero --> prevent division by zero
-                if(Math.abs(amtOfIncomeWithCombat) > 0.000001){
-                    percentOfIncome = ((double)tax)/amtOfIncomeWithCombat*100.0;
+                if(Math.abs(Double.parseDouble(AIG)) > 0.000001){
+                    percentOfIncome = ((double)tax)/Double.parseDouble(AIG)*100.0;
                 }
 
                 taxSummary.replaceRange(null, 0, taxSummaryMessage.length());
                 taxSummaryMessage = "Your taxes are estimated at $" + moneyDecimalFormat.format(tax) +
                         ". This is " + percentIncomeFormat.format(percentOfIncome) + "% of your total income of " +
-                        "$" + moneyDecimalFormat.format(amtOfIncomeWithCombat) + ". Your total tax payments for the " +
+                        "$" + moneyDecimalFormat.format(Double.parseDouble(AIG)) + ". Your total tax payments for the " +
                         "year were $" + moneyDecimalFormat.format(payments);
 
 

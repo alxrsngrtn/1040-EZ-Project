@@ -1,5 +1,7 @@
 package pkg1040ez.project;
 
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,8 +18,7 @@ public class taxCalculatorTest {
     }
 
     @org.junit.Test
-    public void mfjTaxes() throws Exception {
-        // Test cases around thresholds
+    public void mfjTaxesThreshold() throws Exception {
         double taxThresh1 = 17400;
         double taxThresh2 = 70700;
 
@@ -35,8 +36,11 @@ public class taxCalculatorTest {
         assertEquals(9734.849999999999, belowThresh2, EPSILON);
         assertEquals(9735.0, equalThresh2, EPSILON);
         assertEquals(9735.25, aboveThresh2, EPSILON);
+    }
 
-        // Sanity: i *= 2 from 1 .. i <= 524288
+    @org.junit.Test
+    public void mfjTaxesGeneralCase() throws Exception {
+        // i *= 2 from 1 .. i <= 524288
         assertEquals(0, taxCalc.mfjTaxes(0), EPSILON);
         assertEquals(0.1, taxCalc.mfjTaxes(1), EPSILON);
         assertEquals(0.4, taxCalc.mfjTaxes(4), EPSILON);
@@ -61,27 +65,40 @@ public class taxCalculatorTest {
     }
 
     @org.junit.Test
-    public void singleTaxes() throws Exception {
+    public void singleTaxesEdgeCases() throws Exception {
+        // Zero case
+        assertEquals(0, taxCalc.mfjTaxes(0), EPSILON);
 
+        // Max limit of double
+        assertEquals(4.4942328371557893E307, taxCalc.mfjTaxes(Double.MAX_VALUE), EPSILON);
+
+        // Underflow limit of double
+        assertEquals(1E-101, taxCalc.mfjTaxes(1E-100), 1E-110);
+    }
+
+    @org.junit.Test
+    public void singleTaxesThreshold() throws Exception {
         double taxThresh1 = 8700;
         double taxThresh2 = 35350;
         double taxThresh3 = 85650;
 
-        assertEquals(870.0,taxCalc.singleTaxes(taxThresh1), EPSILON);
+        assertEquals(870.0, taxCalc.singleTaxes(taxThresh1), EPSILON);
         assertEquals(4867.5, taxCalc.singleTaxes(taxThresh2), EPSILON);
         assertEquals(17442.5, taxCalc.singleTaxes(taxThresh3), EPSILON);
 
-        assertEquals(869.90, taxCalc.singleTaxes(taxThresh1-1), EPSILON);
-        assertEquals(4867.35, taxCalc.singleTaxes(taxThresh2-1), EPSILON);
-        assertEquals(17442.25, taxCalc.singleTaxes(taxThresh3-1), EPSILON);
+        assertEquals(869.90, taxCalc.singleTaxes(taxThresh1 - 1), EPSILON);
+        assertEquals(4867.35, taxCalc.singleTaxes(taxThresh2 - 1), EPSILON);
+        assertEquals(17442.25, taxCalc.singleTaxes(taxThresh3 - 1), EPSILON);
 
 
-        assertEquals(870.15, taxCalc.singleTaxes(taxThresh1+1), EPSILON);
-        assertEquals(4867.75, taxCalc.singleTaxes(taxThresh2+1), EPSILON);
-        assertEquals(17442.78, taxCalc.singleTaxes(taxThresh3+1), EPSILON);
+        assertEquals(870.15, taxCalc.singleTaxes(taxThresh1 + 1), EPSILON);
+        assertEquals(4867.75, taxCalc.singleTaxes(taxThresh2 + 1), EPSILON);
+        assertEquals(17442.78, taxCalc.singleTaxes(taxThresh3 + 1), EPSILON);
+    }
 
-
-        // Sanity: i *= 2 from 1 .. i <= 524288
+    @org.junit.Test
+    public void singleTaxGeneralCase() {
+        // i *= 2 from 1 .. i <= 524288
         assertEquals(0, taxCalc.singleTaxes(0), EPSILON);
         assertEquals(0.1, taxCalc.singleTaxes(1), EPSILON);
         assertEquals(0.4, taxCalc.singleTaxes(4), EPSILON);
@@ -104,7 +121,6 @@ public class taxCalculatorTest {
         assertEquals(30160.66, taxCalc.singleTaxes(131072), EPSILON);
         assertEquals(66860.82, taxCalc.singleTaxes(262144), EPSILON);
         assertEquals(140261.14, taxCalc.singleTaxes(524288), EPSILON);
-
     }
 
 }

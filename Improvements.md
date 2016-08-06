@@ -7,7 +7,7 @@
 - Error: `[java] Database inaccessible!`. Caused by: 
  1. When you click "Calculate" button too many times with minimal input (e.g. just wage form entered)
 - [x] Possible bug: for mfjTaxes (and singleTaxes), when taxableIncome is zero, the calculated tax is 9735.25? 
-
+- Users should be allowed to enter decimal numbers (cents) into forms
 ## Enhancements
 - Should comma delimit numbers, will make input text more readable
 - Empty input should be automatically replaced with zero
@@ -15,6 +15,11 @@
 - [x] Add Tax Summary text explaining in English what the user's tax bill or refund is. 
 
 ## Test Cases
+### Main
+- Form should be able to calculate double user input
+- Users should be able to input BigDecimal numbers (that exceed the max limit of doubles) into the unemployment compensation, nontaxable combat pay, and income tax witheld forms
+- 
+
 ### taxCalculatorTest
 #### CalcTax()
 - Should be able to reject negative double values of taxable income
@@ -26,10 +31,10 @@
 #### mfjTaxes() & singleTaxes()
 - [x] Should calculate the correct tax amount above, below, and equal to every threshold/bracket
 - [x] Should calculate the correct tax amount for a wide range of possible values (general case)
-- Should calculate the correct tax amount for edge cases: 
+- [x] Should calculate the correct tax amount for edge cases: 
     1. [x] Zero 
-    2. Max limit of double
-    3. Underflow limits of double (i.e. very small number floating point precision)
+    2. [x] Max limit of double
+    3. [x] Underflow limits of double (i.e. very small number floating point precision)
 
 ## Refactoring Suggestions
 ### General
