@@ -22,14 +22,14 @@
 - Should be able to round very small numbers to zero
 - Should be able to correctly calculate the tax on zero income
 - Should be able to calculate taxes on numbers larger than the positive max allowed for doubles since the input and output are Strings
-- 
+
 #### mfjTaxes() & singleTaxes()
 - [x] Should calculate the correct tax amount above, below, and equal to every threshold/bracket
 - [x] Should calculate the correct tax amount for a wide range of possible values (general case)
 - Should calculate the correct tax amount for edge cases: 
-1. [x] Zero 
-2. Max limit of double
-3. Underflow limits of double (i.e. very small number floating point precision)
+    1. [x] Zero 
+    2. Max limit of double
+    3. Underflow limits of double (i.e. very small number floating point precision)
 
 ## Refactoring Suggestions
 ### General
