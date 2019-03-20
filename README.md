@@ -1,3 +1,10 @@
+# Intuit ProSeries Code Challenge
+
+Please check out the [improvements](/Improvements.md) file for an overview of my contributions in this coding chanllenge. 
+
+
+## Original Project Description
+
 Hello! This is a simple, personal project to use Java and Swing to create a 1040-EZ simulator. My intent with this project is to re-create the 1040-EZ form, with all of its constraints, such that a person can project his/her tax due at the end of the year.
 
 8/4/2013:
